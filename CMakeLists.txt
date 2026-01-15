@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.5.0)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++2a")
+project(font_parser VERSION 0.1.0 LANGUAGES C CXX)
+file(GLOB SOURCES *.h *.cpp)
+add_executable(font_parser main.cpp ${SOURCES})
+target_compile_options(font_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
