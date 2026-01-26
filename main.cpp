@@ -15,28 +15,36 @@ void ReadStream(std::istream &is = std::cin, std::ostream &os = std::cout)
     bool is_cin = &is == &std::cin;
     unsigned char_width = 6, char_height = 8;
     map<char, vector<uint8_t>> char_to_array{
-        {' ', {}}, {'!', {}}, {'#', {}}, {'$', {}}, {'%', {}}, {'&', {}}, {'\'', {}}, {'(', {}}, {')', {}}, {'*', {}},
-        {'+', {}}, {',', {}}, {'-', {}}, {'.', {}}, {'/', {}}, {'0', {}}, {'1', {}},  {'2', {}}, {'3', {}}, {'4', {}},
-        {'5', {}}, {'6', {}}, {'7', {}}, {'8', {}}, {'9', {}}, {':', {}}, {';', {}},  {'<', {}}, {'=', {}}, {'>', {}},
-        {'?', {}}, {'@', {}}, {'A', {}}, {'B', {}}, {'C', {}}, {'D', {}}, {'E', {}},  {'F', {}}, {'G', {}}, {'H', {}},
-        {'I', {}}, {'J', {}}, {'K', {}}, {'L', {}}, {'M', {}}, {'N', {}}, {'O', {}},  {'P', {}}, {'Q', {}}, {'R', {}},
-        {'S', {}}, {'T', {}}, {'U', {}}, {'V', {}}, {'W', {}}, {'X', {}}, {'Y', {}},  {'Z', {}},
-    };
-    os << "std::map<char, std::vector<uin8_t>> font = {" << std::endl;
+        {' ', {}}, {'!', {}}, {'\"', {}}, {'#', {}}, {'$', {}}, {'%', {}}, {'&', {}}, {'\'', {}}, {'(', {}}, {')', {}},
+        {'*', {}}, {'+', {}}, {',', {}},  {'-', {}}, {'.', {}}, {'/', {}}, {'0', {}}, {'1', {}},  {'2', {}}, {'3', {}},
+        {'4', {}}, {'5', {}}, {'6', {}},  {'7', {}}, {'8', {}}, {'9', {}}, {':', {}}, {';', {}},  {'<', {}}, {'=', {}},
+        {'>', {}}, {'?', {}}, {'@', {}},  {'A', {}}, {'B', {}}, {'C', {}}, {'D', {}}, {'E', {}},  {'F', {}}, {'G', {}},
+        {'H', {}}, {'I', {}}, {'J', {}},  {'K', {}}, {'L', {}}, {'M', {}}, {'N', {}}, {'O', {}},  {'P', {}}, {'Q', {}},
+        {'R', {}}, {'S', {}}, {'T', {}},  {'U', {}}, {'V', {}}, {'W', {}}, {'X', {}}, {'Y', {}},  {'Z', {}}, {'a', {}},
+        {'b', {}}, {'c', {}}, {'d', {}},  {'e', {}}, {'f', {}}, {'g', {}}, {'h', {}}, {'i', {}},  {'j', {}}, {'k', {}},
+        {'l', {}}, {'m', {}}, {'n', {}},  {'o', {}}, {'p', {}}, {'q', {}}, {'r', {}}, {'s', {}},  {'t', {}}, {'u', {}},
+        {'v', {}}, {'w', {}}, {'x', {}},  {'y', {}}, {'z', {}}};
+    os << "std::map<char, std::vector<uint8_t>> font = {" << std::endl;
     for (auto &[ch, arr] : char_to_array)
     {
+        if (ch == 'A')
+        {
+            std::cout << "capturing.." << std::endl;
+        }
+        if (!is)
+            break;
         if (is_cin)
             std::cout << "Enter signature for character " << ch << std::endl;
-
         arr.resize(char_width, 0);
         std::string buffer;
         for (unsigned row = 0; row < char_height; ++row)
         {
+
             is >> buffer;
             buffer.resize(char_width, 0);
             for (unsigned column = 0; column < char_width; column++)
             {
-                if (buffer.at(column) != '0')
+                if (buffer.at(column) != '0' && buffer.at(column))
                 {
                     arr[column] |= 0x01 << row;
                 }
@@ -59,15 +67,33 @@ void ReadStream(std::istream &is = std::cin, std::ostream &os = std::cout)
             is_first = false;
         }
         os << "}}";
-        if (ch != 'Z')
+        if (ch != 'z')
             os << ",";
         os << std::endl;
     }
     os << "};" << std::endl;
 }
 
+void Test()
+{
+    std::cout << "Testing.." << std::endl;
+    std::stringstream iss;
+    iss << "000000" << std::endl;
+    iss << "111100" << std::endl;
+    iss << "100010" << std::endl;
+    iss << "100010" << std::endl;
+    iss << "101100" << std::endl;
+    iss << "101000" << std::endl;
+    iss << "100100" << std::endl;
+    iss << "100010" << std::endl;
+    std::stringstream oss;
+    ReadStream(iss, oss);
+    std::cout << oss.str();
+}
+
 int main()
 {
+    Test();
     std::string user_response;
     std::cout << "this program parses binary font into map" << std::endl
               << "correct example for implementation of char 0:" << std::endl
